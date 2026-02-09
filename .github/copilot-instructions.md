@@ -1,5 +1,41 @@
 # Copilot / AI Agent Instructions — spring-boot-project-example
 
+Purpose: Short, actionable guidance to get productive in this repository.
+
+- **Big picture**
+  - Java 17 Spring Boot service exposing REST APIs for `Customer` resources; data persisted in MongoDB.
+  - Typical flow: controller -> service impl (`impl/`) -> repository (`repository/`) -> MongoDB.
+  - MapStruct mappers in `mapper/` perform DTO ↔ entity conversions and use a strict unmapped policy.
+  - Controller methods annotated with `@ApiLogger` are captured by AOP and written to `ApiLogEntity` via `ApiLogRepository`.
+
+- **Build / run / tests (exact commands)**
+  - Build (with annotation processing): `mvn -U clean package`.
+  - Run locally: `mvn spring-boot:run` or run the `SpringBootProjectExampleApplication` main class.
+  - Tests: `mvn test` (note: no embedded Mongo configured by default; tests typically mock DB interactions).
+
+- **Local environment**
+  - Java 17 and Maven required. MongoDB defaults: `localhost:27017`, database `spring-boot-project-example` (see `src/main/resources/application.properties`).
+  - Enable Lombok and annotation processing in your IDE so MapStruct + Lombok compile correctly.
+
+- **Repo-specific patterns & gotchas**
+  - MapStruct: `@MapperConfig(unmappedTargetPolicy = ReportingPolicy.ERROR)` — altering DTO/entity fields requires updating mappers or adding explicit ignores.
+  - DTOs live in `dto/`, entities in `entity/`. Many mappers intentionally ignore `id` on create (see `CustomerMapper`).
+  - API logging: `@ApiLogger` on controllers; `ApiLogAspect` depends on `CommonUtility.getHttpServletRequest()` and a `customObjectMapper` bean provided in `spring/config/CommonConfig.java`.
+  - Repositories extend `MongoRepository<Entity, String>` and are auto-scanned (`@EnableMongoRepositories`).
+
+- **Integration points**
+  - MongoDB: runtime dependency. For tests that touch API logging, provide or mock an `HttpServletRequest` or stub `CommonUtility.getHttpServletRequest()`.
+  - OpenAPI: configured in `spring/config/OpenApiConfig.java` (controller package scanning for docs).
+
+- **Files to inspect first**
+  - Controller: [src/main/java/evrentan/examples/springbootprojectexample/controller/CustomerController.java](src/main/java/evrentan/examples/springbootprojectexample/controller/CustomerController.java)
+  - Mapper: [src/main/java/evrentan/examples/springbootprojectexample/mapper/CustomerMapper.java](src/main/java/evrentan/examples/springbootprojectexample/mapper/CustomerMapper.java)
+  - AOP logging: [src/main/java/evrentan/examples/springbootprojectexample/aspect/ApiLogAspect.java](src/main/java/evrentan/examples/springbootprojectexample/aspect/ApiLogAspect.java)
+  - Config: [src/main/java/evrentan/examples/springbootprojectexample/spring/config/CommonConfig.java](src/main/java/evrentan/examples/springbootprojectexample/spring/config/CommonConfig.java)
+
+If you want expansion on testing examples (mocking `RequestContextHolder` / `CommonUtility`), MapStruct unit-test patterns, or CI expectations, tell me which to add.
+# Copilot / AI Agent Instructions — spring-boot-project-example
+
 Purpose: give an AI coding agent the essential, actionable context to be productive in this repository.
 
 - **Big picture**: This is a small Spring Boot service (Spring Boot 2.6.2, Java 17, Maven) that exposes REST APIs for `Customer` entities persisted in MongoDB. Key layers:
