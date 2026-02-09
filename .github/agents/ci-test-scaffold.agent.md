@@ -39,7 +39,7 @@ For unit tests:
 - Mock external dependencies appropriately
 - Include setup/teardown where needed for test isolation
 - Add comments explaining non-obvious test logic
-- Structure tests to match the codebase structure
+- Structure tests to match the codebase  structure
 
 Edge cases to handle:
 - Different CI/CD runners (Linux, Windows, macOS) - ask user preference
