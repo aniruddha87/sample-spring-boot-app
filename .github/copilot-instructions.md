@@ -2,6 +2,7 @@
 
 Purpose: Short, actionable guidance to get productive in this repository.
 
+
 - **Big picture**
   - Java 17 Spring Boot service exposing REST APIs for `Customer` resources; data persisted in MongoDB.
   - Typical flow: controller -> service impl (`impl/`) -> repository (`repository/`) -> MongoDB.
